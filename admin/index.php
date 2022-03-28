@@ -1,6 +1,6 @@
 <?php
 require_once("loginCheck.php");
-    if(!(isset($auth))){
+    if(!(isset($auth))) {
         header("Location:../index.php?e=3");
         die("Not logged in");
     }

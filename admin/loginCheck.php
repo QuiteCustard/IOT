@@ -3,9 +3,7 @@ session_start();
 
 if (isset($_SESSION["auth"]))
 {
-
-$auth = $_SESSION["auth"];
-die("Authenticated");
+    $auth = $_SESSION["auth"];
 }
 else
 {
