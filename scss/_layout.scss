@@ -2,7 +2,7 @@ body {
     background: var(--bg);
     background-size: 200%;
     background-position: center;
-    min-height:100vh;
+    min-height: 100vh;
 }
 
 .login {
@@ -16,32 +16,57 @@ body {
     0% {
         background-position: 0% 50%;
     }
+
     50% {
         background-position: 100% 50%;
     }
+
     100% {
         background-position: 0% 50%;
     }
 }
 
+header {
+    position: sticky;
+    top: 0;
+}
+
 main {
     display: grid;
-    min-height: inherit;
-    grid-template-areas: 
-    "heading heading"
-    "pi api";
     grid-template-rows: auto 1fr;
 
     h1 {
-       grid-area: heading;
-       text-align: center;
+        text-align: center;
     }
 
-    .pi {
-        grid-area: pi;
-    }
+    .current-temps {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        margin-top: 5rem;
+        gap: 1rem;
+        grid-template-areas: "heading"
+            "pi"
+            "api";
+        justify-items: center;
 
-    .api {
-        grid-area: api;
+        h2 {
+            grid-area: heading;
+            text-align: center;
+        }
+
+        .pi {
+            grid-area: pi;
+        }
+
+        .api {
+            grid-area: api;
+        }
+
+        @media (min-width:800px) {
+            margin-top: 17rem;
+            grid-template-areas:
+                "heading heading"
+                "pi api";
+        }
     }
 }

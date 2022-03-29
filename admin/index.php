@@ -8,29 +8,34 @@ if(!(isset($auth))) {
 
 require_once("../includes/head.php"); 
 ?>
+
 <body>
     <header>
-        <nav>1</nav>
+        <nav>
+            <a href="#">Charts</a>
+            <a href="#">Historical Data</a>
+        </nav>
     </header>
     <main>
-        <h1>Title text</h1>
-        <section class="pi">
-            <div class="card">
-                <h2>Pi Temp</h2>
-                <div class="name">1</div>
-                <div class="temp">1</div>
-            </div>
-        </section>
-        <section class="api">
-            <div class="card">
-                <h2>API Temp</h2>
-                <h3 class="name">Hi hi hi</h3>
+        <h1>IOT</h1>
+        <section class="current-temps">
+        <h2>Temps</h2>
+            <div class="pi">
+                <h3>PI Temp</h3>
+                <p class="name">Location: <span>Sam's room</span></p>
                 <div class="temp">
-                    <h4>No val</h4>
-                    <img src="../assets/unknown.webp">
+                <p><span>Current temperature: </span><span class="temp-val">0</span>°C</p>
+                    <img src="../assets/unknown.webp" height="50" width="50">
                 </div>
             </div>
-    </section>
+            <div class="api">
+                <h3>API Temp</h3>
+                <p class="name">Location: <span>Sam's room</span></p>
+                <div class="temp">
+                    <p><span>Current temperature: </span><span class="temp-val">0</span>°C</p>
+                    <img src="../assets/unknown.webp" height="50" width="50">
+                </div>
+        </section>
     </main>
     <footer></footer>
-<?php require_once("../includes/footer.php"); ?>
+    <?php require_once("../includes/footer.php"); ?>

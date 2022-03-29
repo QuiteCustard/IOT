@@ -6,9 +6,8 @@
     border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-
 button {
-    padding:1rem;
+    padding: 1rem;
     border-radius: 10px;
     border: 0;
 }
@@ -35,48 +34,89 @@ form {
         color: rgba(0, 0, 0, 0.623);
         font-size: clamp(16px, 4vw, 18px);
 
-
         &::placeholder {
             color: inherit;
-            transition: 300ms;
         }
     }
-    
+
     button {
         background: #e9e9e9;
         font-size: clamp(16px, 4vw, 18px);
         cursor: pointer;
-        transition:300ms;
+        transition: 300ms;
 
-        &:hover, &:focus {
+        &:hover,
+        &:focus {
             background-color: #c5c4c4;
         }
     }
+}
+
+header {
+    display: flex;
+    justify-content: center;
+}
+
+nav {
+    display: flex;
+    gap:1rem;
+    justify-content: center;
+    margin:1rem 0;
+    padding:1rem;
+    @include background;
+    width:50%;
+
+    & > a {
+        text-decoration: none;
+        color: rgb(3, 3, 3);
+        font-family: var(--roboto);
+        font-size: clamp(16px, 4vw, 20px);
+        transition: 300ms;
+        position: relative;
+
+        &::after {
+            position: absolute;
+            bottom:0;
+            left:0;
+            height:1px;
+            width: 100%;
+            content: '';
+            transform: scaleX(0);
+            content: '';
+            border-bottom: solid 3px rgb(68, 68, 68);  
+            transition: transform 250ms ease-in-out;
+            z-index: 1;
+        }
+        
+        &:hover, &:focus {
+            color:rgb(68, 68, 68);
+
+            &::after {
+                transform: scale(0.7);
+            }
+        }
+
+    }
+    
 }
 
 .pi, .api {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    padding: 1rem;
+    border-radius: 10px;
+    @include background;
+    gap: 1rem;
 
-    & > .card {
+    .temp {
         display: flex;
-        flex-direction: column;
         align-items: center;
-        padding:1rem;
-        border-radius: 10px;
-        @include background;
-        gap:1rem;
+        width: 100%;
+        justify-content: center;
 
-       .temp img {
+        img {
             border-radius: 10px;
         }
     }
-}
-
-.api .temp {
-    display: flex;
-    align-items: center;
-    gap:1rem;
 }
