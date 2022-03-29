@@ -25,7 +25,7 @@ require_once("../includes/head.php");
                 <p class="name">Location: <span>Sam's room</span></p>
                 <div class="temp">
                 <p><span>Current temperature: </span><span class="temp-val">0</span>°C</p>
-                    <img src="../assets/unknown.webp" height="50" width="50">
+                    <img src="../assets/unknown.webp" height="50" width="50" alt="Icon depicting temperature">
                 </div>
             </div>
             <div class="api">
@@ -33,7 +33,7 @@ require_once("../includes/head.php");
                 <p class="name">Location: <span>Sam's room</span></p>
                 <div class="temp">
                     <p><span>Current temperature: </span><span class="temp-val">0</span>°C</p>
-                    <img src="../assets/unknown.webp" height="50" width="50">
+                    <img src="../assets/unknown.webp" height="50" width="50" alt="Icon depicting temperature">
                 </div>
         </section>
     </main>
