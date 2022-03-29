@@ -1,1 +1,36 @@
+:root {
+    --montserrat: 'Montserrat', 'sans-serif';
+    --roboto: 'Roboto', 'sans-serif';
+    --bg:linear-gradient(-45deg, #d3d3d3, #5b5bff, #ff3ec5b4, #23d5ab);
+}
+
+html {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+*,*::before,
+*::after {
+    margin: 0;
+    padding:0;
+}
+
+// Accessability
+:is(a, button, input, textarea, summary):focus {
+    box-shadow: 0 0 0 2px rgb(0, 127, 212);
+    outline: 0;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #333333;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #434343;
+}
+
 @import '_typography';
