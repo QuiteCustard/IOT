@@ -1,3 +1,12 @@
+@mixin background {
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+
 button {
     padding:1rem;
     border-radius: 10px;
@@ -10,12 +19,9 @@ form {
     gap: 1rem;
     padding: 1rem;
     border-radius: 15px;
-    background: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    backdrop-filter: blur(4px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
     color: rgb(3, 3, 3);
     font-family: var(--roboto);
+    @include background;
 
     label {
         font-size: clamp(16px, 4vw, 21px);
@@ -46,4 +52,31 @@ form {
             background-color: #c5c4c4;
         }
     }
+}
+
+.pi, .api {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    & > .card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding:1rem;
+        border-radius: 10px;
+        @include background;
+        gap:1rem;
+
+       .temp img {
+            border-radius: 10px;
+        }
+    }
+}
+
+.api .temp {
+    display: flex;
+    align-items: center;
+    gap:1rem;
 }

@@ -2,12 +2,12 @@ body {
     background: var(--bg);
     background-size: 200%;
     background-position: center;
+    min-height:100vh;
 }
 
 .login {
     display: grid;
     place-items: center;
-    height:100vh;
     background-size: 400% 400%;
     animation: gradient 15s ease infinite;
 }
@@ -21,5 +21,27 @@ body {
     }
     100% {
         background-position: 0% 50%;
+    }
+}
+
+main {
+    display: grid;
+    min-height: inherit;
+    grid-template-areas: 
+    "heading heading"
+    "pi api";
+    grid-template-rows: auto 1fr;
+
+    h1 {
+       grid-area: heading;
+       text-align: center;
+    }
+
+    .pi {
+        grid-area: pi;
+    }
+
+    .api {
+        grid-area: api;
     }
 }
