@@ -48,7 +48,6 @@ require_once("../includes/head.php");
             <div class="api">
                 <h3>API Chart</h3>
             </div>
-</div>
         </section>
     </main>
     <footer>

@@ -5,6 +5,7 @@ body {
     min-height: 100vh;
     display: grid;
     grid-template-rows: auto 1fr auto;
+    
 }
 
 .login {
@@ -35,19 +36,13 @@ header {
 }
 
 main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     padding:1rem;
-    gap:
-    4rem;
+    display: flex;
+    gap: 4rem;
+    flex-direction: column;
 
     h1 {
         text-align: center;
-
-        @media (min-width:800px){
-            padding: 8rem 0;
-        }
     }
 
     .current-temps,
@@ -57,7 +52,7 @@ main {
             text-align: center;
             padding-bottom:1.5rem;
 
-            @media (min-width:800px){
+            @media (min-width:700px){
                 padding-bottom:4rem;
             }
         }
@@ -73,5 +68,9 @@ main {
                 gap:2rem;
             }
         }
+    }
+
+    @media (min-width:700px) {
+        gap: 11rem;
     }
 }
