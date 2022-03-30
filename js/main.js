@@ -1,6 +1,6 @@
-const apiLocationName = document.querySelector(".api > .name > span");
-const apiTempVal = document.querySelector(".api .temp > p > .temp-val");
-const apiTempIcon = document.querySelector(".api > .temp > img");
+const apiLocationName = document.querySelector(".current-temps .api .name span");
+const apiTempVal = document.querySelector(".current-temps .api .temp .temp-val");
+const apiTempIcon = document.querySelector(".api img");
 
 const piLocationName = document.querySelector(".pi .name > span");
 const piTempVal = document.querySelector(".pi .temp > p > .temp-val");
@@ -21,7 +21,7 @@ function apiCall() {
                 apiTempIcon.src = "https://openweathermap.org/img/wn/" + icon + ".png";
             }))
 
-        .catch(err => alert(err))
+        .catch(err => console.log(err))
 }
 
 function piCall() {

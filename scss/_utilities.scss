@@ -52,19 +52,20 @@ form {
     }
 }
 
-header {
+header, footer {
     display: flex;
     justify-content: center;
 }
 
 nav {
     display: flex;
-    gap:1rem;
+    gap: 1rem;
     justify-content: center;
-    margin:1rem 0;
-    padding:1rem;
+    margin: 1rem 0;
+    padding: 1rem;
     @include background;
-    width:50%;
+    width: 85%;
+    max-width: 1000px;
 
     & > a {
         text-decoration: none;
@@ -76,20 +77,21 @@ nav {
 
         &::after {
             position: absolute;
-            bottom:0;
-            left:0;
-            height:1px;
+            bottom: 0;
+            left: 0;
+            height: 1px;
             width: 100%;
             content: '';
             transform: scaleX(0);
             content: '';
-            border-bottom: solid 3px rgb(68, 68, 68);  
+            border-bottom: solid 3px rgb(68, 68, 68);
             transition: transform 250ms ease-in-out;
             z-index: 1;
         }
-        
-        &:hover, &:focus {
-            color:rgb(68, 68, 68);
+
+        &:hover,
+        &:focus {
+            color: rgb(68, 68, 68);
 
             &::after {
                 transform: scale(0.7);
@@ -97,26 +99,28 @@ nav {
         }
 
     }
-    
+
 }
 
-.pi, .api {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem;
-    border-radius: 10px;
-    @include background;
-    gap: 1rem;
-
-    .temp {
+.current-temps,.charts {
+    .pi,
+    .api {
         display: flex;
+        flex-direction: column;
         align-items: center;
-        width: 100%;
-        justify-content: center;
+        padding: 1rem;
+        @include background;
+        gap: 1rem;
 
-        img {
-            border-radius: 10px;
+        .temp {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            justify-content: center;
+
+            img {
+                border-radius: 10px;
+            }
         }
     }
 }
