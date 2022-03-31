@@ -18,7 +18,7 @@ require_once("../includes/head.php");
         </nav>
     </header>
     <main>
-        <h1>IOT</h1>
+        <h1>Dashboard</h1>
         <section class="current-temps">
             <h2>Temps</h2>
             <div class="container">
