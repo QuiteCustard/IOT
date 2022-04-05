@@ -8,10 +8,11 @@
         <input type="password" id="password" name="password" placeholder="Enter password..." required>
         <button class="button" action="submit">Sign in</button>
     </form>
-    <?php
-    // Get errors
-    if (isset($_GET["e"])){
-        include_once ("logging.php");
-    }
+<?php
+// Get errors
+if (isset($_GET["e"])){
+    include_once ("logging.php");
+}
+
+require_once("/includes/footer.php"); 
 ?>
-<?php require_once("/includes/footer.php"); ?>
