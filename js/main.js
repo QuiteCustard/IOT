@@ -10,6 +10,13 @@ const outdoorPiLocationName = document.querySelector(".pi-outdoor .name > span")
 const outdoorPiTempVal = document.querySelector(".pi-outdoor .temp > p > .temp-val");
 const outdoorPiTempIcon = document.querySelector(".pi-outdoor > .temp > img");
 
+const alertElement = document.querySelector(".pi-alert");
+const confirmAlert = document.querySelector(".pi-alert > .confirm-alert");
+
+const alertContainer = document.querySelector(".alert-container");
+const chartAlertEle = document.querySelector(".chart-alert");
+const alertButton = document.querySelector(".chart-alert > .confirm-alert");
+
 const key = "2a26f9f282b9a3040f9c5419c953341a";
 
 function apiCall() {
@@ -64,7 +71,6 @@ outdoorPiCall();
 indoorPiCall();
 
 function confirmAlertFunction() {
-
     alertElement.classList.add("hidden");
 
     setTimeout(function () {
@@ -72,9 +78,6 @@ function confirmAlertFunction() {
         alertElement.classList.add("none")
     }, 1000);
 }
-
-const alertElement = document.querySelector(".pi-alert");
-const confirmAlert = document.querySelector(".pi-alert > .confirm-alert");
 
 confirmAlert.addEventListener('click', confirmAlertFunction);
 
@@ -92,11 +95,11 @@ async function indoorChart() {
             // Convert to correct types for columns
             return [new Date(i.timestamp), Number(i.temp_val)]
         })
+
         let data = new google.visualization.DataTable();
         data.addColumn('date', 'Date');
         data.addColumn('number', 'Temperature in °C');
         data.addRows(jsonMap);
-
 
         let options = {
             hAxis: {
@@ -106,6 +109,7 @@ async function indoorChart() {
                 title: 'Temperature'
             }
         };
+
         let chart = new google.visualization.LineChart(document.getElementById('indoor-chart'));
         chart.draw(data, options);
     });
@@ -132,7 +136,6 @@ async function outdoorChart() {
         data.addColumn('number', 'Temperature in °C');
         data.addRows(jsonMap);
 
-
         let options = {
             hAxis: {
                 title: 'Timestamp'
@@ -141,16 +144,13 @@ async function outdoorChart() {
                 title: 'Temperature'
             }
         };
+
         let chart = new google.visualization.LineChart(document.getElementById('outdoor-chart'));
         chart.draw(data, options);
     });
 }
+
 outdoorChart();
-
-const alertContainer = document.querySelector(".alert-container");
-const chartAlertEle = document.querySelector(".chart-alert");
-const alertButton = document.querySelector(".chart-alert > .confirm-alert");
-
 
 function chartAlert() {
     chartAlertEle.classList.remove("hidden");
