@@ -65,16 +65,16 @@ indoorPiCall();
 
 function confirmAlertFunction() {
 
-    alert.classList.add("hidden");
+    alertElement.classList.add("hidden");
 
     setTimeout(function () {
-        alert.classList.remove("hidden");
-        alert.classList.add("none")
+        alertElement.classList.remove("hidden");
+        alertElement.classList.add("none")
     }, 1000);
 }
 
-const alert = document.querySelector(".alert");
-const confirmAlert = document.querySelector(".confirm-alert");
+const alertElement = document.querySelector(".pi-alert");
+const confirmAlert = document.querySelector(".pi-alert > .confirm-alert");
 
 confirmAlert.addEventListener('click', confirmAlertFunction);
 
@@ -126,6 +126,7 @@ async function outdoorChart() {
             // Convert to correct types for columns
             return [new Date(i.timestamp), Number(i.temp_val)]
         })
+
         let data = new google.visualization.DataTable();
         data.addColumn('date', 'Date');
         data.addColumn('number', 'Temperature in °C');
@@ -145,3 +146,23 @@ async function outdoorChart() {
     });
 }
 outdoorChart();
+
+const alertContainer = document.querySelector(".alert-container");
+const chartAlertEle = document.querySelector(".chart-alert");
+const alertButton = document.querySelector(".chart-alert > .confirm-alert");
+
+
+function chartAlert() {
+    chartAlertEle.classList.remove("hidden");
+
+    alertButton.addEventListener("click", function () {
+        chartAlertEle.classList.add("hidden");
+        setTimeout(function () {
+            chartAlertEle.classList.add("none");
+        }, 1000);
+    })
+}
+
+window.addEventListener('resize', function () {
+    chartAlert();
+}, true);

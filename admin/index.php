@@ -50,10 +50,6 @@ if (isset($last_update)) {
     $last_update_outdoor = strtotime($last_update_outdoor);
     $time_diff = $current_time - $last_update;
     $time_diff_outdoor = $current_time - $last_update_outdoor;
-
-    if ($time_diff > 300 || $time_diff_outdoor > 300) {
-        echo "<div class='alert'>5 mins have passed since the last update from the PI, it may be offline.<a class='confirm-alert'>Confirm</a></div>"; 
-    }
 }
 ?>
 <body>
@@ -99,7 +95,7 @@ if (isset($last_update)) {
             <div class="container">
             <div class="pi pi-indoor">
                 <h3>PI Chart</h3>
-                <div id="indoor-chart" style="min-height:30vh; width:100%;"></div>
+                <div id="indoor-chart" style="min-height:30vh; width:90%;"></div>
             </div>
             <div class="pi pi-outdoor">
                 <h3>Outdoor PI Chart</h3>
@@ -117,4 +113,12 @@ if (isset($last_update)) {
             <a href="#">Historical Data</a>
         </nav>
     </footer>
+    <div class="alert-container">
+        <div class="alert chart-alert hidden">The page may not display correctly unless you refresh the page due to the chart sizes.<a class='confirm-alert'>I understand</a></div>
+<?php
+    if ($time_diff > 300 || $time_diff_outdoor > 300) {
+        echo "<div class='alert pi-alert'>5 mins have passed since the last update from the PI, it may be offline.<a class='confirm-alert'>Confirm</a></div>"; 
+    } 
+?>
+    </div>
     <?php require_once("../includes/footer.php"); ?>

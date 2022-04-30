@@ -70,7 +70,7 @@ nav {
     text-align: center;
     align-items: center;
 
-    & > a {
+    &>a {
         text-decoration: none;
         color: rgb(3, 3, 3);
         font-family: var(--roboto);
@@ -106,6 +106,7 @@ nav {
 
 .current-temps,
 .charts {
+
     .pi,
     .api {
         display: flex;
@@ -128,17 +129,38 @@ nav {
     }
 }
 
-.charts .pi, .charts .api {
-    flex:1;
+.charts .pi,
+.charts .api {
+    flex: 1;
+
+    #indoor-chart,
+    #outdoor-chart {
+        display: flex;
+        align-items: center;
+        
+        // Inside of chart
+        &>div>div>div>svg>rect {
+            fill: transparent;
+        }
+    }
 }
 
-.alert {
+
+.alert-container {
     display: flex;
     position: fixed;
     bottom: 1vh;
     left: 50%;
     transform: translate(-50%, 0);
     z-index: 2;
+    flex-direction: column;
+    align-items: center;
+    gap:25px;
+    width: 100%;
+}
+
+.alert {
+    display: flex;
     @include background;
     font-family: var(--roboto);
     font-size: clamp(17px, 7vw, 20px);
@@ -152,7 +174,7 @@ nav {
     max-width: 400px;
     text-align: center;
     opacity: 1;
-    transition: opacity 200ms;
+    transition: visibility 200ms, opacity 200ms;
 
     .confirm-alert {
         padding: 10px;
@@ -170,9 +192,15 @@ nav {
 
     &.hidden {
         opacity: 0;
+        visibility: hidden;
     }
 
     &.none {
         display: none;
     }
+
+    &.chart-alert {
+        bottom:15vh;
+    }
 }
+
