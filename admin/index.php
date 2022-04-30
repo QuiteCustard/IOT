@@ -7,8 +7,37 @@ if(!(isset($auth))) {
 }
 
 require_once("../includes/head.php"); 
-?>
 
+require_once ("connect.php");
+
+// Get most recent temp value 
+$sql = "SELECT `temp_val`,`timestamp` FROM `indoor_temp` ORDER BY `indoor_temp`.`timestamp` DESC LIMIT 1;";
+
+$result = $mysqli->query($sql);
+
+if($result->num_rows) {
+    while ($row = $result->fetch_assoc()) {
+        $last_update = $row['timestamp'];
+        $val =  $row['temp_val'];
+    }
+}
+else {
+    echo "No results found";
+}
+
+if (isset($last_update)) {
+    // Get current time
+    $current_time = new DateTime();
+    $current_time =  $current_time->getTimestamp();
+    // Convert to unix time
+    $last_update = strtotime($last_update);
+    $time_diff = $current_time - $last_update;
+
+    if ($time_diff > 300) {
+        echo "<div class='alert'>5 mins have passed since the last update from the PI, it may be offline.<a class='confirm-alert'>Confirm</a></div>"; 
+    }
+}
+?>
 <body>
     <header>
         <nav>
@@ -26,7 +55,7 @@ require_once("../includes/head.php");
                 <h3>PI Temp</h3>
                 <p class="name">Location: <span>Sam's room</span></p>
                 <div class="temp">
-                    <p><span>Current temperature: </span><span class="temp-val">20</span>°C</p>
+                    <p><span>Current temperature: </span><span class="temp-val"><?= $val ?></span>°C</p>
                     <img src="../assets/unknown.webp" height="50" width="50" alt="Icon depicting temperature">
                 </div>
             </div>

@@ -42,3 +42,21 @@ function piCall() {
 
 apiCall();
 piCall();
+
+function confirmAlertFunction() {
+
+    alert.classList.add("hidden");
+
+    setTimeout(function () {
+        alert.classList.remove("hidden");
+        alert.classList.add("none")
+    }, 1000);
+   
+
+
+}
+
+const alert = document.querySelector(".alert");
+const confirmAlert = document.querySelector(".confirm-alert");
+
+confirmAlert.addEventListener('click', confirmAlertFunction);

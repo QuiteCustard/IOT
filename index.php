@@ -1,4 +1,5 @@
-<?php require_once("includes/head.php"); ?>
+<?php 
+require_once("includes/head.php"); ?>
 
 <body class="login">
     <form method="post" action="admin/auth.php">
