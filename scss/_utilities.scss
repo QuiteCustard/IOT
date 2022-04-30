@@ -67,8 +67,10 @@ nav {
     @include background;
     width: 85%;
     max-width: 1000px;
+    text-align: center;
+    align-items: center;
 
-    &>a {
+    & > a {
         text-decoration: none;
         color: rgb(3, 3, 3);
         font-family: var(--roboto);
@@ -104,7 +106,6 @@ nav {
 
 .current-temps,
 .charts {
-
     .pi,
     .api {
         display: flex;
@@ -125,6 +126,10 @@ nav {
             }
         }
     }
+}
+
+.charts .pi, .charts .api {
+    flex:1;
 }
 
 .alert {

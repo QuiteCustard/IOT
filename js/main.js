@@ -2,9 +2,13 @@ const apiLocationName = document.querySelector(".current-temps .api .name span")
 const apiTempVal = document.querySelector(".current-temps .api .temp .temp-val");
 const apiTempIcon = document.querySelector(".api img");
 
-const piLocationName = document.querySelector(".pi .name > span");
-const piTempVal = document.querySelector(".pi .temp > p > .temp-val");
-const piTempIcon = document.querySelector(".pi > .temp > img");
+const indoorPiLocationName = document.querySelector(".pi-indoor .name > span");
+const indoorPiTempVal = document.querySelector(".pi-indoor .temp > p > .temp-val");
+const indoorPiTempIcon = document.querySelector(".pi-indoor > .temp > img");
+
+const outdoorPiLocationName = document.querySelector(".pi-outdoor .name > span");
+const outdoorPiTempVal = document.querySelector(".pi-outdoor .temp > p > .temp-val");
+const outdoorPiTempIcon = document.querySelector(".pi-outdoor > .temp > img");
 
 const key = "2a26f9f282b9a3040f9c5419c953341a";
 
@@ -25,23 +29,39 @@ function apiCall() {
         .catch(err => console.log(err))
 }
 
-function piCall() {
-    const val = piTempVal.textContent;
+function indoorPiCall() {
+    const val = indoorPiTempVal.textContent;
     switch (true) {
         case (val <= 0):
-            piTempIcon.src = "../assets/ice.png";
+            indoorPiTempIcon.src = "../assets/ice.png";
             break;
         case (val > 0 && val <= 10):
-            piTempIcon.src = "../assets/cloud.png";
+            indoorPiTempIcon.src = "../assets/cloud.png";
             break;
         case (val > 10):
-            piTempIcon.src = "../assets/sun.png";
+            indoorPiTempIcon.src = "../assets/sun.png";
+            break;
+    }
+}
+
+function outdoorPiCall() {
+    const val = outdoorPiTempVal.textContent;
+    switch (true) {
+        case (val <= 0):
+            outdoorPiTempIcon.src = "../assets/ice.png";
+            break;
+        case (val > 0 && val <= 10):
+            outdoorPiTempIcon.src = "../assets/cloud.png";
+            break;
+        case (val > 10):
+            outdoorPiTempIcon.src = "../assets/sun.png";
             break;
     }
 }
 
 apiCall();
-piCall();
+outdoorPiCall();
+indoorPiCall();
 
 function confirmAlertFunction() {
 
@@ -51,12 +71,77 @@ function confirmAlertFunction() {
         alert.classList.remove("hidden");
         alert.classList.add("none")
     }, 1000);
-   
-
-
 }
 
 const alert = document.querySelector(".alert");
 const confirmAlert = document.querySelector(".confirm-alert");
 
 confirmAlert.addEventListener('click', confirmAlertFunction);
+
+async function indoorChart() {
+    // Load chart
+    google.charts.load('current', {
+        packages: ['corechart', 'line']
+    });
+    google.charts.setOnLoadCallback(async () => {
+        const getFetchData = await fetch(`indoorData.php`);
+        const json = await getFetchData.json();
+
+        // Map json to array
+        const jsonMap = json.map(i => {
+            // Convert to correct types for columns
+            return [new Date(i.timestamp), Number(i.temp_val)]
+        })
+        let data = new google.visualization.DataTable();
+        data.addColumn('date', 'Date');
+        data.addColumn('number', 'Temperature in °C');
+        data.addRows(jsonMap);
+
+
+        let options = {
+            hAxis: {
+                title: 'Timestamp'
+            },
+            vAxis: {
+                title: 'Temperature'
+            }
+        };
+        let chart = new google.visualization.LineChart(document.getElementById('indoor-chart'));
+        chart.draw(data, options);
+    });
+}
+indoorChart();
+
+async function outdoorChart() {
+    // Load chart
+    google.charts.load('current', {
+        packages: ['corechart', 'line']
+    });
+    google.charts.setOnLoadCallback(async () => {
+        const getFetchData = await fetch(`outdoorData.php`);
+        const json = await getFetchData.json();
+
+        // Map json to array
+        const jsonMap = json.map(i => {
+            // Convert to correct types for columns
+            return [new Date(i.timestamp), Number(i.temp_val)]
+        })
+        let data = new google.visualization.DataTable();
+        data.addColumn('date', 'Date');
+        data.addColumn('number', 'Temperature in °C');
+        data.addRows(jsonMap);
+
+
+        let options = {
+            hAxis: {
+                title: 'Timestamp'
+            },
+            vAxis: {
+                title: 'Temperature'
+            }
+        };
+        let chart = new google.visualization.LineChart(document.getElementById('outdoor-chart'));
+        chart.draw(data, options);
+    });
+}
+outdoorChart();
