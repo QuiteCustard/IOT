@@ -23,13 +23,13 @@ require_once("functions.php");
     </header>
     <main>
         <h1>Dashboard</h1>
-        <section id="controls">
-        <h2>Controls</h2>
-        <div class="container">
-            <a class="control"><i class="fa-solid fa-fan"></i>Air conditioner</a>
-            <a class="control"><i class="fa-solid fa-temperature-arrow-up"></i>Heating</a>
-            <a class="control"><i class="fa-solid fa-house"></i>Open windows</a>
-        </div>
+        <section id="controls-section">
+            <h2>Controls</h2>
+            <div class="container" id="controls">
+                <button class="control" id="ac" data-enabled="0"><i class="fa-solid fa-fan"></i>Air conditioner</button>
+                <button class="control" id="heating" data-enabled="0"><i class="fa-solid fa-temperature-arrow-up"></i>Heating</button>
+                <button class="control" id="window" data-enabled="0"><i class="fa-solid fa-house"></i>Open windows</button>
+            </div>
         </section>
         <section id="current-temps">
             <h2>Temps</h2>

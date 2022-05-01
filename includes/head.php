@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="My IOT project">
     <meta name="author" content="Sam Edwards">
-    <meta http-equiv="refresh" content="30">
+   <!-- <meta http-equiv="refresh" content="30"> -->
     <title>IOT</title>
     <link rel="stylesheet" href="../css/main.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">

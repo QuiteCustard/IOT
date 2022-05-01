@@ -22,22 +22,66 @@ const key = "2a26f9f282b9a3040f9c5419c953341a";
 
 function checkLastTime() {
     fetch(`piUpdateTime.php`)
-    .then(response => response.json()
-        .then((data) => {
-            console.log(data);
-            if (data > 300 ) {
-                piAlert.classList.remove("hidden");
-            }
-        }))
-    .catch(err => console.log(err))
+        .then(response => response.json()
+            .then((data) => {
+                console.log(data);
+                if (data > 300) {
+                    piAlert.classList.remove("hidden");
+                }
+            }))
+        .catch(err => console.log(err))
 }
 checkLastTime();
+
+const controls = document.getElementById('controls');
+const ac = document.getElementById('ac');
+const heating = document.getElementById('heating');
+const windows = document.getElementById('window');
+
+const state = {
+    ac: 0,
+    window: 0,
+    heating: 0,
+}
+
+controls.addEventListener('click', async (e) => {
+    const type = e.target.id;
+    state[type] = state[type] ? 0 : 1;
+    e.target.dataset.enabled = state[type];
+
+    const f = await fetch('setControls.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(state),
+    })
+})
+
+async function setControls() {
+    const f = await fetch(`controls.php`);
+    const data = await f.json();
+    if (data.ac == 1) { 
+        ac.dataset.enabled = 1;
+        state.ac = 1;
+    }
+    if (data.window == 1) {
+        windows.dataset.enabled = 1;
+        state.window = 1;
+    }
+    if (data.heating == 1) {
+        heating.dataset.enabled = 1;
+        state.heating = 1;
+    }
+}
+
+setControls();
 
 function apiCall() {
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=${key}&units=metric`)
         .then(response => response.json()
             .then((data) => {
-               console.log(data);
+                console.log(data);
                 let num = data.main.temp.toFixed(1);
                 let icon = data.weather[0].icon;
                 apiLocationName.textContent = data.name;
