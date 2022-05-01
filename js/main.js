@@ -10,12 +10,13 @@ const outdoorPiLocationName = document.querySelector(".pi-outdoor .name > span")
 const outdoorPiTempVal = document.querySelector(".pi-outdoor .temp > p > .temp-val");
 const outdoorPiTempIcon = document.querySelector(".pi-outdoor > .temp > img");
 
-const alertElement = document.querySelector(".pi-alert");
-const confirmAlert = document.querySelector(".pi-alert > .confirm-alert");
-
 const alertContainer = document.querySelector(".alert-container");
-const chartAlertEle = document.querySelector(".chart-alert");
-const alertButton = document.querySelector(".chart-alert > .confirm-alert");
+
+const piAlert = document.querySelector(".pi-alert");
+const piConfirmAlert = document.querySelector(".pi-alert > .confirm-alert");
+
+const chartAlert = document.querySelector(".chart-alert");
+const chartConfirmAlert = document.querySelector(".chart-alert > .confirm-alert");
 
 const key = "2a26f9f282b9a3040f9c5419c953341a";
 
@@ -70,16 +71,16 @@ apiCall();
 outdoorPiCall();
 indoorPiCall();
 
-function confirmAlertFunction() {
-    alertElement.classList.add("hidden");
+function piConfirmAlertFunction() {
+    piAlert.classList.add("hidden");
 
     setTimeout(function () {
-        alertElement.classList.remove("hidden");
-        alertElement.classList.add("none")
+        piAlert.classList.remove("hidden");
+        piAlert.classList.add("none")
     }, 1000);
 }
 
-confirmAlert.addEventListener('click', confirmAlertFunction);
+piConfirmAlert.addEventListener('click', piConfirmAlertFunction);
 
 async function indoorChart() {
     // Load chart
@@ -152,18 +153,18 @@ async function outdoorChart() {
 
 outdoorChart();
 
-function chartAlert() {
-    chartAlertEle.classList.remove("hidden");
+function chartAlertFunction() {
+    chartAlert.classList.remove("hidden");
 
-    alertButton.addEventListener("click", function () {
-        chartAlertEle.classList.add("hidden");
+    chartConfirmAlert.addEventListener("click", function () {
+        chartAlert.classList.add("hidden");
         setTimeout(function () {
-            chartAlertEle.classList.add("none");
+            chartAlert.classList.add("none");
         }, 1000);
     })
 }
 
 window.addEventListener('resize', function () {
-    chartAlert();
+    chartAlertFunction();
 }, true);
 
