@@ -42,13 +42,17 @@ else {
 }
 
 if (isset($last_update)) {
+    $timezone = new DateTimeZone("Europe/London");
     // Get current time
-    $current_time = new DateTime();
-    $current_time =  $current_time->getTimestamp();
+    $current_time = new DateTime(null, $timezone);
+    echo  $current_time = $current_time->getTimestamp();
+    echo "<br>";
     // Convert to unix time
-    $last_update = strtotime($last_update);
+    echo $last_update = strtotime($last_update);
     $last_update_outdoor = strtotime($last_update_outdoor);
-    $time_diff = $current_time - $last_update;
+    echo "<br>";
+    // Get time difference
+    echo $time_diff = $current_time - $last_update;
     $time_diff_outdoor = $current_time - $last_update_outdoor;
 }
 ?>
@@ -62,6 +66,14 @@ if (isset($last_update)) {
     </header>
     <main>
         <h1>Dashboard</h1>
+        <section class="controls">
+        <h2>Controls</h2>
+        <div class="container">
+            <a class="control"><i class="fa-solid fa-air-conditioner"></i></a>
+            <a class="control">Hi</a>
+            <a class="control">Hi</a>
+        </div>
+        </section>
         <section class="current-temps">
             <h2>Temps</h2>
             <div class="container">

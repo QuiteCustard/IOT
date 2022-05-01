@@ -166,3 +166,4 @@ function chartAlert() {
 window.addEventListener('resize', function () {
     chartAlert();
 }, true);
+

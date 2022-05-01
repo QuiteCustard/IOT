@@ -104,9 +104,22 @@ nav {
     }
 }
 
+.controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .container {
+        @include background;
+        padding:1rem;
+    }
+    .control {
+
+    }
+}
+
 .current-temps,
 .charts {
-
     .pi,
     .api {
         display: flex;
@@ -157,50 +170,49 @@ nav {
     align-items: center;
     gap:25px;
     width: 100%;
-}
 
-.alert {
-    display: flex;
-    @include background;
-    font-family: var(--roboto);
-    font-size: clamp(17px, 7vw, 20px);
-    padding: 1.2rem;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    gap: 25px;
-    background: rgba(255, 255, 255, 0.82);
-    width: 80%;
-    max-width: 400px;
-    text-align: center;
-    opacity: 1;
-    transition: visibility 200ms, opacity 200ms;
-
-    .confirm-alert {
-        padding: 10px;
+    .alert {
+        display: flex;
         @include background;
-        cursor: pointer;
-        transition: background-color 300ms;
-        text-decoration: none;
-        color: black;
-
-        &:hover,
-        &:focus {
-            background-color: #ff3ec552;
+        font-family: var(--roboto);
+        font-size: clamp(17px, 7vw, 20px);
+        padding: 1.2rem;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        gap: 25px;
+        background: rgba(255, 255, 255, 0.82);
+        width: 80%;
+        max-width: 400px;
+        text-align: center;
+        opacity: 1;
+        transition: visibility 200ms, opacity 200ms;
+    
+        .confirm-alert {
+            padding: 10px;
+            @include background;
+            cursor: pointer;
+            transition: background-color 300ms;
+            text-decoration: none;
+            color: black;
+    
+            &:hover,
+            &:focus {
+                background-color: #ff3ec552;
+            }
+        }
+    
+        &.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+    
+        &.none {
+            display: none;
+        }
+    
+        &.chart-alert {
+            bottom:15vh;
         }
     }
-
-    &.hidden {
-        opacity: 0;
-        visibility: hidden;
-    }
-
-    &.none {
-        display: none;
-    }
-
-    &.chart-alert {
-        bottom:15vh;
-    }
 }
-
