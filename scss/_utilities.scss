@@ -104,22 +104,38 @@ nav {
     }
 }
 
-.controls {
+#controls {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 1rem;
 
     .container {
         @include background;
         padding:1rem;
+        width: 100%;
+        max-width: 500px;
+        justify-content: space-around;
     }
-    .control {
 
+    .control {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: var(--roboto);
+        font-size: clamp(17px, 7vw, 20px);
+        gap:10px;
+        padding:0.625rem;
+
+        i {
+            font-size: 30px;
+            color:white;
+        }
     }
 }
 
-.current-temps,
-.charts {
+#current-temps,
+#charts {
     .pi,
     .api {
         display: flex;
@@ -142,8 +158,8 @@ nav {
     }
 }
 
-.charts .pi,
-.charts .api {
+#charts .pi,
+#charts .api {
     flex: 1;
 
     #indoor-chart,

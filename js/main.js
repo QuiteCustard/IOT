@@ -20,12 +20,24 @@ const chartConfirmAlert = document.querySelector(".chart-alert > .confirm-alert"
 
 const key = "2a26f9f282b9a3040f9c5419c953341a";
 
+function checkLastTime() {
+    fetch(`piUpdateTime.php`)
+    .then(response => response.json()
+        .then((data) => {
+            console.log(data);
+            if (data > 300 ) {
+                piAlert.classList.remove("hidden");
+            }
+        }))
+    .catch(err => console.log(err))
+}
+checkLastTime();
+
 function apiCall() {
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=${key}&units=metric`)
         .then(response => response.json()
             .then((data) => {
-                console.log(data);
-
+               //console.log(data);
                 let num = data.main.temp.toFixed(1);
                 let icon = data.weather[0].icon;
 
@@ -167,4 +179,3 @@ function chartAlertFunction() {
 window.addEventListener('resize', function () {
     chartAlertFunction();
 }, true);
-
