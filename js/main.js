@@ -20,19 +20,6 @@ const chartConfirmAlert = document.querySelector(".chart-alert > .confirm-alert"
 
 const key = "2a26f9f282b9a3040f9c5419c953341a";
 
-function checkLastTime() {
-    fetch(`piUpdateTime.php`)
-        .then(response => response.json()
-            .then((data) => {
-                console.log(data);
-                if (data > 300) {
-                    piAlert.classList.remove("hidden");
-                }
-            }))
-        .catch(err => console.log(err))
-}
-checkLastTime();
-
 const controls = document.getElementById('controls');
 const ac = document.getElementById('ac');
 const heating = document.getElementById('heating');
@@ -43,6 +30,29 @@ const state = {
     window: 0,
     heating: 0,
 }
+
+function checkLastTime() {
+    fetch(`piUpdateTime.php`)
+    .then(response => response.json()
+        .then((data) => {
+            const indoorUpdate = data.indoor;
+            const outdoorUpdate = data.outdoor;
+            
+            if (indoorUpdate > 300 && outdoorUpdate > 300) {
+                // dataset.pi is set to 0 if the pi has not updated in 5mins (the pi is offline)
+                ac.dataset.pi = 0;
+                windows.dataset.pi = 0;
+                heating.dataset.pi = 0;
+                piAlert.classList.remove("hidden");
+            } else {
+                ac.dataset.pi = 1;
+                windows.dataset.pi = 1;
+                heating.dataset.pi = 1;
+            }
+        }))
+    .catch(err => console.log(err))
+}
+checkLastTime();
 
 controls.addEventListener('click', async (e) => {
     const type = e.target.id;
@@ -61,7 +71,7 @@ controls.addEventListener('click', async (e) => {
 async function setControls() {
     const f = await fetch(`controls.php`);
     const data = await f.json();
-    if (data.ac == 1) { 
+    if (data.ac == 1) {
         ac.dataset.enabled = 1;
         state.ac = 1;
     }
@@ -81,7 +91,7 @@ function apiCall() {
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=${key}&units=metric`)
         .then(response => response.json()
             .then((data) => {
-                console.log(data);
+                console.log(data); // see array
                 let num = data.main.temp.toFixed(1);
                 let icon = data.weather[0].icon;
                 apiLocationName.textContent = data.name;
@@ -125,6 +135,15 @@ function outdoorPiCall() {
 apiCall();
 outdoorPiCall();
 indoorPiCall();
+
+
+setInterval(function () {
+    // Run these functions again every 30 secs to get up to date weather + check if pi is online
+    checkLastTime();
+    outdoorPiCall();
+    indoorPiCall();
+}, 30000)
+
 
 function piConfirmAlertFunction() {
     piAlert.classList.add("hidden");

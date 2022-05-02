@@ -15,7 +15,7 @@ require_once("functions.php");
 <body>
     <header>
         <nav>
-            <a href="#controls">Controls</a>
+            <a href="#controls-section">Controls</a>
             <a href="#current-temps">Current Temps</a>
             <a href="#charts">Charts</a>
             <a href="#">Historical Data</a>
@@ -26,9 +26,9 @@ require_once("functions.php");
         <section id="controls-section">
             <h2>Controls</h2>
             <div class="container" id="controls">
-                <button class="control" id="ac" data-enabled="0"><i class="fa-solid fa-fan"></i>Air conditioner</button>
-                <button class="control" id="heating" data-enabled="0"><i class="fa-solid fa-temperature-arrow-up"></i>Heating</button>
-                <button class="control" id="window" data-enabled="0"><i class="fa-solid fa-house"></i>Open windows</button>
+                <button class="control" id="ac" data-enabled="0" data-pi="0"><i class="fa-solid fa-fan"></i>Air conditioner</button>
+                <button class="control" id="heating" data-enabled="0" data-pi="0"><i class="fa-solid fa-temperature-arrow-up"></i>Heating</button>
+                <button class="control" id="window" data-enabled="0" data-pi="0"><i class="fa-solid fa-house"></i>Open windows</button>
             </div>
         </section>
         <section id="current-temps">
@@ -41,6 +41,7 @@ require_once("functions.php");
                     <p><span>Current temperature: </span><span class="temp-val"><?= $val ?></span>°C</p>
                     <img src="../assets/unknown.webp" height="50" width="50" alt="Icon depicting temperature">
                 </div>
+                <p>Last Update: <?= date('H:i - d/m/Y',strtotime($last_update)); ?></p>
             </div>
             <div class="pi pi-outdoor">
                 <h3>Outdoor PI Temp</h3>
@@ -49,6 +50,7 @@ require_once("functions.php");
                     <p><span>Current temperature: </span><span class="temp-val"><?= $val_outdoor ?></span>°C</p>
                     <img src="../assets/unknown.webp" height="50" width="50" alt="Icon depicting temperature">
                 </div>
+                <p>Last Update: <?= date('H:i - d/m/Y',strtotime($last_update_outdoor)); ?></p>
             </div>
             <div class="api">
                 <h3>API Temp</h3>
@@ -76,11 +78,6 @@ require_once("functions.php");
         </section>
     </main>
     <footer>
-        <nav>
-            <a href="#">Current Temps</a>
-            <a href="#">Charts</a>
-            <a href="#">Historical Data</a>
-        </nav>
     </footer>
     <div class="alert-container">
         <div class="alert chart-alert hidden">The page may not display correctly unless you refresh the page due to the chart sizes.<a class='confirm-alert'>I understand</a></div>
