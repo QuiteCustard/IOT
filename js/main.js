@@ -31,26 +31,28 @@ const state = {
     heating: 0,
 }
 
+let apiObj = {};
+
 function checkLastTime() {
     fetch(`piUpdateTime.php`)
-    .then(response => response.json()
-        .then((data) => {
-            const indoorUpdate = data.indoor;
-            const outdoorUpdate = data.outdoor;
-            
-            if (indoorUpdate > 300 && outdoorUpdate > 300) {
-                // dataset.pi is set to 0 if the pi has not updated in 5mins (the pi is offline)
-                ac.dataset.pi = 0;
-                windows.dataset.pi = 0;
-                heating.dataset.pi = 0;
-                piAlert.classList.remove("hidden");
-            } else {
-                ac.dataset.pi = 1;
-                windows.dataset.pi = 1;
-                heating.dataset.pi = 1;
-            }
-        }))
-    .catch(err => console.log(err))
+        .then(response => response.json()
+            .then((data) => {
+                const indoorUpdate = data.indoor;
+                const outdoorUpdate = data.outdoor;
+
+                if (indoorUpdate > 300 && outdoorUpdate > 300) {
+                    // dataset.pi is set to 0 if the pi has not updated in 5mins (the pi is offline)
+                    ac.dataset.pi = 0;
+                    windows.dataset.pi = 0;
+                    heating.dataset.pi = 0;
+                    piAlert.classList.remove("hidden");
+                } else {
+                    ac.dataset.pi = 1;
+                    windows.dataset.pi = 1;
+                    heating.dataset.pi = 1;
+                }
+            }))
+        .catch(err => console.log(err))
 }
 checkLastTime();
 
@@ -91,7 +93,7 @@ function apiCall() {
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=${key}&units=metric`)
         .then(response => response.json()
             .then((data) => {
-                console.log(data); // see array
+                //  console.log(data); // see array
                 let num = data.main.temp.toFixed(1);
                 let icon = data.weather[0].icon;
                 apiLocationName.textContent = data.name;
@@ -100,6 +102,21 @@ function apiCall() {
                 apiTempIcon.src = "https://openweathermap.org/img/wn/" + icon + ".png";
             }))
         .catch(err => console.log(err))
+
+
+    for (let i = 0; i < 5; i++) {
+        let date = new Date();
+        date.setDate(date.getDate() - i);
+        let unix = Math.floor(new Date(date).getTime() / 1000);
+
+        fetch(`https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=51.5085&lon=-0.1257&dt=${unix}&appid=${key}&units=metric`)
+            .then(response => response.json()
+                .then((data) => {
+                    console.log(data)
+                    apiObj["days"] = data.hourly;
+                }))
+            .catch(err => console.log(err))
+    }
 }
 
 function indoorPiCall() {
@@ -168,17 +185,18 @@ async function indoorChart() {
         // Map json to array
         const jsonMap = json.map(i => {
             // Convert to correct types for columns
-            return [new Date(i.timestamp), Number(i.temp_val)]
+            return [new Date(i.timestamp).toLocaleDateString(), Number(i.temp_val)]
         })
 
         let data = new google.visualization.DataTable();
-        data.addColumn('date', 'Date');
+        data.addColumn('string', 'Date');
         data.addColumn('number', 'Temperature in °C');
         data.addRows(jsonMap);
 
         let options = {
             hAxis: {
-                title: 'Timestamp'
+                title: 'Timestamp',
+                textPosition: 'none' // hide title
             },
             vAxis: {
                 title: 'Temperature'
@@ -203,17 +221,18 @@ async function outdoorChart() {
         // Map json to array
         const jsonMap = json.map(i => {
             // Convert to correct types for columns
-            return [new Date(i.timestamp), Number(i.temp_val)]
+            return [new Date(i.timestamp).toLocaleDateString(), Number(i.temp_val)]
         })
 
         let data = new google.visualization.DataTable();
-        data.addColumn('date', 'Date');
+        data.addColumn('string', 'Date');
         data.addColumn('number', 'Temperature in °C');
         data.addRows(jsonMap);
 
         let options = {
             hAxis: {
-                title: 'Timestamp'
+                title: 'Timestamp',
+                textPosition: 'none' // hide title
             },
             vAxis: {
                 title: 'Temperature'
@@ -226,6 +245,40 @@ async function outdoorChart() {
 }
 
 outdoorChart();
+
+async function apiChart() {
+    // Load chart
+    google.charts.load('current', {
+        packages: ['corechart', 'line']
+    });
+    google.charts.setOnLoadCallback(async () => {
+        console.log(apiObj);
+        let jsonMap = apiObj.days.map(i => {
+            return [new Date(i.dt * 1000).toLocaleDateString(), Number(i.temp)]
+            
+        })
+        console.log(apiObj.days[0].dt*1000)
+        let data = new google.visualization.DataTable();
+        data.addColumn('string', 'Date');
+        data.addColumn('number', 'Temperature in °C');
+        data.addRows(jsonMap);
+
+        let options = {
+            hAxis: {
+                title: 'Timestamp',
+                textPosition: 'none' // hide title
+            },
+            vAxis: {
+                title: 'Temperature'
+            }
+        };
+
+        let chart = new google.visualization.LineChart(document.getElementById('api-chart'));
+        chart.draw(data, options);
+    });
+}
+apiChart();
+
 
 function chartAlertFunction() {
     chartAlert.classList.remove("hidden");

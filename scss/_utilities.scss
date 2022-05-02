@@ -174,12 +174,11 @@ nav {
     }
 }
 
-#charts .pi,
-#charts .api {
+#charts .pi, #charts .api {
     flex: 1;
 
     #indoor-chart,
-    #outdoor-chart {
+    #outdoor-chart, #api-chart {
         display: flex;
         align-items: center;
 

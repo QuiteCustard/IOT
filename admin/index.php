@@ -66,7 +66,7 @@ require_once("functions.php");
             <div class="container">
             <div class="pi pi-indoor">
                 <h3>PI Chart</h3>
-                <div id="indoor-chart" style="min-height:30vh; width:90%;"></div>
+                <div id="indoor-chart" style="min-height:30vh; width:100%;"></div>
             </div>
             <div class="pi pi-outdoor">
                 <h3>Outdoor PI Chart</h3>
@@ -74,6 +74,7 @@ require_once("functions.php");
             </div>
             <div class="api">
                 <h3>API Chart</h3>
+                <div id="api-chart" style="min-height:30vh; width:100%;"></div>
             </div>
         </section>
     </main>
