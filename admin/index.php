@@ -69,7 +69,7 @@ require_once("functions.php");
                 <div id="indoor-chart" style="min-height:30vh; width:100%;"></div>
             </div>
             <div class="pi pi-outdoor">
-                <h3>Outside Sam's roomt</h3>
+                <h3>Outside Sam's room</h3>
                 <div id="outdoor-chart" style="min-height:30vh; width:100%;"></div>
             </div>
             <div class="api">
