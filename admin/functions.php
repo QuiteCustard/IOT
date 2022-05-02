@@ -28,5 +28,3 @@ if($result->num_rows) {
 else {
     echo "No results found";
 }
-
-

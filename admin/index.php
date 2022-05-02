@@ -65,15 +65,15 @@ require_once("functions.php");
             <h2>Charts</h2>
             <div class="container">
             <div class="pi pi-indoor">
-                <h3>PI Chart</h3>
+                <h3>Sam's room</h3>
                 <div id="indoor-chart" style="min-height:30vh; width:100%;"></div>
             </div>
             <div class="pi pi-outdoor">
-                <h3>Outdoor PI Chart</h3>
+                <h3>Outside Sam's roomt</h3>
                 <div id="outdoor-chart" style="min-height:30vh; width:100%;"></div>
             </div>
             <div class="api">
-                <h3>API Chart</h3>
+                <h3>London</h3>
                 <div id="api-chart" style="min-height:30vh; width:100%;"></div>
             </div>
         </section>

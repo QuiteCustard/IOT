@@ -195,7 +195,7 @@ async function indoorChart() {
 
         let options = {
             hAxis: {
-                title: 'Timestamp',
+            //     title: 'Timestamp',
                 textPosition: 'none' // hide title
             },
             vAxis: {
@@ -231,7 +231,7 @@ async function outdoorChart() {
 
         let options = {
             hAxis: {
-                title: 'Timestamp',
+            //    title: 'Timestamp',
                 textPosition: 'none' // hide title
             },
             vAxis: {
@@ -265,7 +265,7 @@ async function apiChart() {
 
         let options = {
             hAxis: {
-                title: 'Timestamp',
+               // title: 'Timestamp',
                 textPosition: 'none' // hide title
             },
             vAxis: {
