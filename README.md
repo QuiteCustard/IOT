@@ -17,4 +17,5 @@
 - Click the control and wait for it to change colour. The below picture shows that air con is turned off, heating and windows are turned on.
 ![image](https://user-images.githubusercontent.com/56020602/166480940-f6e0925f-ce99-4243-8c23-e3ea5104972b.png)
 
+https://i.gyazo.com/36803a811a8bb8efbf8ef7bfa9370ed2.mp4 - Video of changing states
 
