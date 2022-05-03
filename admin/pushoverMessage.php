@@ -9,7 +9,7 @@ if ($val < 0 || $val_outdoor < 0) {
         CURLOPT_POSTFIELDS => array(
           "token" => "aa43uq6nfzp79sc9razgj49xtcda73",
           "user" => "u8ym6krstqxmzvnxjy2ywsxgt8nafm",
-          "message" => "Temp is below 0°C!",
+          "message" => "Temp is below 0°C threshold!",
         ),
         CURLOPT_SAFE_UPLOAD => true,
         CURLOPT_RETURNTRANSFER => true,
