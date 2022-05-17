@@ -2,8 +2,11 @@
 
 require_once("connect.php");
 
+// Get fetch parameter 
+$order = file_get_contents('php://input');
+
 // Get most recent temp value for indoor temp
-$sql = "SELECT `temp_val`,`timestamp` FROM `indoor_temp` ORDER BY `timestamp`;";
+$sql = "SELECT `temp_val`,`timestamp` FROM `indoor_temp` ORDER BY `timestamp` $order;";
 
 $result = $mysqli->query($sql);
 

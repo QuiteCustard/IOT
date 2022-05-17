@@ -1,13 +1,17 @@
+'use strict';
+
 const apiLocationName = document.querySelector("#current-temps .api .name span");
 const apiTempVal = document.querySelector("#current-temps .api .temp .temp-val");
 const apiTempIcon = document.querySelector(".api img");
 
 const indoorPiLocationName = document.querySelector(".pi-indoor .name > span");
 const indoorPiTempVal = document.querySelector(".pi-indoor .temp > p > .temp-val");
+const indoorPiLastUpdate = document.querySelector(".pi-indoor > .last-update > span");
 const indoorPiTempIcon = document.querySelector(".pi-indoor > .temp > img");
 
 const outdoorPiLocationName = document.querySelector(".pi-outdoor .name > span");
 const outdoorPiTempVal = document.querySelector(".pi-outdoor .temp > p > .temp-val");
+const outdoorPiLastUpdate = document.querySelector(".pi-outdoor > .last-update > span");
 const outdoorPiTempIcon = document.querySelector(".pi-outdoor > .temp > img");
 
 const alertContainer = document.querySelector(".alert-container");
@@ -33,28 +37,33 @@ const state = {
 
 let apiObj = {};
 
-function checkLastTime() {
-    fetch(`piUpdateTime.php`)
-        .then(response => response.json()
-            .then((data) => {
-                const indoorUpdate = data.indoor;
-                const outdoorUpdate = data.outdoor;
+setPiUpdateTime();
 
-                if (indoorUpdate > 300 && outdoorUpdate > 300) {
-                    // dataset.pi is set to 0 if the pi has not updated in 5mins (the pi is offline)
-                    ac.dataset.pi = 0;
-                    windows.dataset.pi = 0;
-                    heating.dataset.pi = 0;
-                    piAlert.classList.remove("hidden");
-                } else {
-                    ac.dataset.pi = 1;
-                    windows.dataset.pi = 1;
-                    heating.dataset.pi = 1;
-                }
-            }))
-        .catch(err => console.log(err))
+async function setPiUpdateTime() {
+    let data = await getPiUpdateTime();
+
+    const indoorUpdate = data.indoor;
+    const outdoorUpdate = data.outdoor;
+
+    if (indoorUpdate > 300 && outdoorUpdate > 300) {
+        // dataset.pi is set to 0 if the pi has not updated in 5mins (the pi is offline)
+        ac.dataset.pi = 0;
+        windows.dataset.pi = 0;
+        heating.dataset.pi = 0;
+        piAlert.classList.remove("hidden");
+    } else {
+        ac.dataset.pi = 1;
+        windows.dataset.pi = 1;
+        heating.dataset.pi = 1;
+    }
 }
-checkLastTime();
+
+async function getPiUpdateTime() {
+
+    let updateTime = await fetch(`piUpdateTime.php`)
+    if (updateTime.status !== 200) return "Error, please try again later";
+    return await updateTime.json();
+}
 
 controls.addEventListener('click', async (e) => {
     const type = e.target.id;
@@ -70,9 +79,13 @@ controls.addEventListener('click', async (e) => {
     })
 })
 
-async function setControls() {
-    const f = await fetch(`controls.php`);
-    const data = await f.json();
+updateControls();
+
+async function updateControls() {
+    const controls = await fetch(`controls.php`);
+    if (controls.status !== 200) return "Error, please try again later";
+    const data = await controls.json();
+
     if (data.ac == 1) {
         ac.dataset.enabled = 1;
         state.ac = 1;
@@ -87,91 +100,91 @@ async function setControls() {
     }
 }
 
-setControls();
+setIndoorPiData();
 
-function apiCall() {
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=${key}&units=metric`)
-        .then(response => response.json()
-            .then((data) => {
-                //  console.log(data); // see array
-                let num = data.main.temp.toFixed(1);
-                let icon = data.weather[0].icon;
-                apiLocationName.textContent = data.name;
-                apiTempVal.textContent = num;
+async function setIndoorPiData() {
+    let order = "DESC";
+    let indoorVal = await getIndoorPiData(order);
+    let tempVal = indoorVal[0].temp_val;
 
-                apiTempIcon.src = "https://openweathermap.org/img/wn/" + icon + ".png";
-            }))
-        .catch(err => console.log(err))
+    indoorPiTempVal.textContent = tempVal;
+    indoorPiLastUpdate.textContent = " " + indoorVal[0].timestamp;
 
-
-    for (let i = 0; i < 5; i++) {
-        let date = new Date();
-        date.setDate(date.getDate() - i);
-        let unix = Math.floor(new Date(date).getTime() / 1000);
-
-        fetch(`https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=51.5085&lon=-0.1257&dt=${unix}&appid=${key}&units=metric`)
-            .then(response => response.json()
-                .then((data) => {
-                    console.log(data)
-                    apiObj["days"] = data.hourly;
-                }))
-            .catch(err => console.log(err))
-    }
-}
-
-function indoorPiCall() {
-    const val = indoorPiTempVal.textContent;
     switch (true) {
-        case (val <= 0):
+        case (tempVal <= 0):
             indoorPiTempIcon.src = "../assets/ice.png";
             break;
-        case (val > 0 && val <= 10):
+        case (tempVal > 0 && tempVal <= 10):
             indoorPiTempIcon.src = "../assets/cloud.png";
             break;
-        case (val > 10):
+        case (tempVal > 10):
             indoorPiTempIcon.src = "../assets/sun.png";
             break;
     }
 }
 
-function outdoorPiCall() {
-    const val = outdoorPiTempVal.textContent;
+async function getIndoorPiData(order) {
+    let data = await fetch(`indoorData.php`, {
+        method: 'POST',
+        body: order,
+    });
+
+    if (data.status !== 200) return "Error, please try again later";
+    return await data.json();
+}
+
+setOutdoorPiData();
+
+async function setOutdoorPiData() {
+    let order = "DESC";
+    let outdoorVal = await getOutdoorPiData(order);
+    let tempVal = outdoorVal[0].temp_val;
+
+    outdoorPiTempVal.textContent = tempVal;
+    outdoorPiLastUpdate.textContent = " " + outdoorVal[0].timestamp;
+
     switch (true) {
-        case (val <= 0):
+        case (tempVal <= 0):
             outdoorPiTempIcon.src = "../assets/ice.png";
             break;
-        case (val > 0 && val <= 10):
+        case (tempVal > 0 && tempVal <= 10):
             outdoorPiTempIcon.src = "../assets/cloud.png";
             break;
-        case (val > 10):
+        case (tempVal > 10):
             outdoorPiTempIcon.src = "../assets/sun.png";
             break;
     }
 }
 
-apiCall();
-outdoorPiCall();
-indoorPiCall();
+async function getOutdoorPiData(order) {
+    let data = await fetch(`outdoorData.php`, {
+        method: 'POST',
+        body: order,
+    });
 
-
-setInterval(function () {
-    // Run these functions again every 30 secs to get up to date weather + check if pi is online
-    checkLastTime();
-    outdoorPiCall();
-    indoorPiCall();
-}, 30000)
-
-
-function piConfirmAlertFunction() {
-    piAlert.classList.add("hidden");
-
-    setTimeout(function () {
-        piAlert.classList.remove("hidden");
-        piAlert.classList.add("none")
-    }, 1000);
+    if (data.status !== 200) return "Error, please try again later";
+    return await data.json();
 }
 
-piConfirmAlert.addEventListener('click', piConfirmAlertFunction);
+setApiCurrentTemp();
+
+async function setApiCurrentTemp() {
+    let data = await getApiCurrentTemp();
+    let num = data.main.temp.toFixed(1);
+    let icon = data.weather[0].icon;
+    apiLocationName.textContent = data.name;
+    apiTempVal.textContent = num;
+    apiTempIcon.src = "https://openweathermap.org/img/wn/" + icon + ".png";
+}
+
+async function getApiCurrentTemp() {
+    const apiTemps = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=${key}&units=metric`);
+    if (apiTemps.status !== 200) return "Error, please try again later";
+    return await apiTemps.json();
+}
+
+// Populate charts
+indoorChart();
 
 async function indoorChart() {
     // Load chart
@@ -179,8 +192,8 @@ async function indoorChart() {
         packages: ['corechart', 'line']
     });
     google.charts.setOnLoadCallback(async () => {
-        const getFetchData = await fetch(`indoorData.php`);
-        const json = await getFetchData.json();
+        let order = "ASC";
+        let json = await getIndoorPiData(order);
 
         // Map json to array
         const jsonMap = json.map(i => {
@@ -195,11 +208,11 @@ async function indoorChart() {
 
         let options = {
             hAxis: {
-            //     title: 'Timestamp',
+                //     title: 'Timestamp',
                 textPosition: 'none' // hide title
             },
             vAxis: {
-                title: 'Temperature'
+                title: 'Temperature in °C'
             }
         };
 
@@ -207,7 +220,8 @@ async function indoorChart() {
         chart.draw(data, options);
     });
 }
-indoorChart();
+
+outdoorChart();
 
 async function outdoorChart() {
     // Load chart
@@ -215,8 +229,8 @@ async function outdoorChart() {
         packages: ['corechart', 'line']
     });
     google.charts.setOnLoadCallback(async () => {
-        const getFetchData = await fetch(`outdoorData.php`);
-        const json = await getFetchData.json();
+        let order = "ASC";
+        let json = await getOutdoorPiData(order);
 
         // Map json to array
         const jsonMap = json.map(i => {
@@ -231,11 +245,11 @@ async function outdoorChart() {
 
         let options = {
             hAxis: {
-            //    title: 'Timestamp',
+                //     title: 'Timestamp',
                 textPosition: 'none' // hide title
             },
             vAxis: {
-                title: 'Temperature'
+                title: 'Temperature in °C'
             }
         };
 
@@ -244,7 +258,26 @@ async function outdoorChart() {
     });
 }
 
-outdoorChart();
+setApiCurrentTempsOverWeek();
+
+async function setApiCurrentTempsOverWeek() {
+    let data = await getApiTempsOverWeek();
+    apiObj["days"] = data.hourly;
+}
+
+async function getApiTempsOverWeek() {
+    for (let i = 0; i < 5; i++) {
+        let date = new Date();
+        date.setDate(date.getDate() - i);
+        let unix = Math.floor(new Date(date).getTime() / 1000);
+
+        const apiTemps = await fetch(`https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=51.5085&lon=-0.1257&dt=${unix}&appid=${key}&units=metric`);
+        if (apiTemps.status !== 200) return "Error, please try again later";
+        return await apiTemps.json();
+    }
+}
+
+apiChart();
 
 async function apiChart() {
     // Load chart
@@ -252,12 +285,10 @@ async function apiChart() {
         packages: ['corechart', 'line']
     });
     google.charts.setOnLoadCallback(async () => {
-        console.log(apiObj);
         let jsonMap = apiObj.days.map(i => {
             return [new Date(i.dt * 1000).toLocaleDateString(), Number(i.temp)]
-            
         })
-        console.log(apiObj.days[0].dt*1000)
+
         let data = new google.visualization.DataTable();
         data.addColumn('string', 'Date');
         data.addColumn('number', 'Temperature in °C');
@@ -265,7 +296,7 @@ async function apiChart() {
 
         let options = {
             hAxis: {
-               // title: 'Timestamp',
+                // title: 'Timestamp',
                 textPosition: 'none' // hide title
             },
             vAxis: {
@@ -277,13 +308,31 @@ async function apiChart() {
         chart.draw(data, options);
     });
 }
-apiChart();
 
+// Run these functions again every 30 secs to get up to date weather + check if pi is online + chart updates
+setInterval(function () {
+    getPiUpdateTime();
+    setApiCurrentTemp();
+    setIndoorPiData();
+    setOutdoorPiData();
+    indoorChart();
+    outdoorChart();
+}, 30000)
+
+
+piConfirmAlert.addEventListener('click', () => {
+    piAlert.classList.add("hidden");
+
+    setTimeout(function () {
+        piAlert.classList.remove("hidden");
+        piAlert.classList.add("none")
+    }, 1000);
+});
 
 function chartAlertFunction() {
     chartAlert.classList.remove("hidden");
 
-    chartConfirmAlert.addEventListener("click", function () {
+    chartConfirmAlert.addEventListener("click", () => {
         chartAlert.classList.add("hidden");
         setTimeout(function () {
             chartAlert.classList.add("none");

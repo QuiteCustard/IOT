@@ -9,8 +9,6 @@ if(!(isset($auth))) {
 require_once("../includes/head.php"); 
 
 require_once ("connect.php");
-require_once("functions.php");
-
 ?>
 <body>
     <header>
@@ -38,19 +36,19 @@ require_once("functions.php");
                 <h3>Indoor PI Temp</h3>
                 <p class="name">Location: <span>Sam's room</span></p>
                 <div class="temp">
-                    <p><span>Current temperature: </span><span class="temp-val"><?= $val ?></span>°C</p>
+                    <p><span>Current temperature: </span><span class="temp-val"></span>°C</p>
                     <img src="../assets/unknown.webp" height="50" width="50" alt="Icon depicting temperature">
                 </div>
-                <p>Last Update: <?= date('H:i - d/m/Y',strtotime($last_update)); ?></p>
+                <p class="last-update">Last Update:<span></span></p>
             </div>
             <div class="pi pi-outdoor">
                 <h3>Outdoor PI Temp</h3>
                 <p class="name">Location: <span>Outside Sam's room</span></p>
                 <div class="temp">
-                    <p><span>Current temperature: </span><span class="temp-val"><?= $val_outdoor ?></span>°C</p>
+                    <p><span>Current temperature: </span><span class="temp-val"></span>°C</p>
                     <img src="../assets/unknown.webp" height="50" width="50" alt="Icon depicting temperature">
                 </div>
-                <p>Last Update: <?= date('H:i - d/m/Y',strtotime($last_update_outdoor)); ?></p>
+                <p class="last-update">Last Update:<span></span></p>
             </div>
             <div class="api">
                 <h3>API Temp</h3>

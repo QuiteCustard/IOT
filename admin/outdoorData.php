@@ -3,7 +3,7 @@
 require_once("connect.php");
 
 // Get most recent temp value for outdoor temp
-$sql = "SELECT `temp_val`,`timestamp` FROM `outdoor_temp` ORDER BY `timestamp`;";
+$sql = "SELECT `temp_val`,`timestamp` FROM `outdoor_temp` ORDER BY `timestamp` DESC;";
 
 $result = $mysqli->query($sql);
 
