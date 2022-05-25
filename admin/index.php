@@ -16,7 +16,6 @@ require_once ("connect.php");
             <a href="#controls-section">Controls</a>
             <a href="#current-temps">Current Temps</a>
             <a href="#charts">Charts</a>
-            <a href="#">Historical Data</a>
         </nav>
     </header>
     <main>
@@ -77,6 +76,8 @@ require_once ("connect.php");
         </section>
     </main>
     <footer>
+        <i class="fas fa-copyright"></i>
+        <p>Sam Edwards <?php echo date("Y"); ?></p>
     </footer>
     <div class="alert-container">
         <div class="alert chart-alert hidden">The page may not display correctly unless you refresh the page due to the chart sizes.<a class='confirm-alert'>I understand</a></div>

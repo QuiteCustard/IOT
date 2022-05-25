@@ -70,13 +70,15 @@ controls.addEventListener('click', async (e) => {
     state[type] = state[type] ? 0 : 1;
     e.target.dataset.enabled = state[type];
 
-    const f = await fetch('setControls.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(state),
-    })
+    if (e.target.dataset.pi != 0) {
+        const f = await fetch('setControls.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(state),
+        })
+    }
 })
 
 updateControls();
