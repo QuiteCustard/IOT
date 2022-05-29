@@ -1,4 +1,5 @@
-# IOT
+# Website dashboard for a virtual household management system
+[View the site](https://ws269058-iot.remote.ac/ "Website dashboard for a virtual household management system")
 ## Login details:
 - Username: user
 - Password: password
