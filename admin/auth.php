@@ -1,8 +1,8 @@
 <?php
 
 if(!isset($_POST['username']) && !isset($_POST['password'])) {
-//if no values are passed from login form, return to previous page (login)
-header("Location: ../index.php?e=1");
+    //if no values are passed from login form, return to previous page (login)
+    header("Location: ../index.php?e=1");
 }
 
 require_once("connect.php");
@@ -17,6 +17,7 @@ $stmt->bind_param("ss", $username, $password);
 $stmt->execute();
 // Set result to this query
 $result = $stmt->get_result();
+
 if ($result->num_rows === 1) {
     while ($row = $result->fetch_assoc()) {
         // let us log in

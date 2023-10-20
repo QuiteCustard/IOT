@@ -287,6 +287,15 @@ async function apiChart() {
         packages: ['corechart', 'line']
     });
     google.charts.setOnLoadCallback(async () => {
+        const chartElement = document.getElementById('api-chart');
+ 
+        if (!apiObj.days) {   
+            const ele = document.createElement("p");
+            ele.textContent = "Sorry, there has been an API error. Please try again later."
+            chartElement.append(ele);
+            return;
+        }
+
         let jsonMap = apiObj.days.map(i => {
             return [new Date(i.dt * 1000).toLocaleDateString(), Number(i.temp)]
         })
@@ -306,7 +315,7 @@ async function apiChart() {
             }
         };
 
-        let chart = new google.visualization.LineChart(document.getElementById('api-chart'));
+        let chart = new google.visualization.LineChart(chartElement);
         chart.draw(data, options);
     });
 }

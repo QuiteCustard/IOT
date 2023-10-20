@@ -1,0 +1,342 @@
+[{
+    "id": "5b597ba5468c095d",
+    "type": "tab",
+    "label": "Flow",
+    "disabled": false,
+    "info": "",
+    "env": []
+}, {
+    "id": "8805cd3e4a8d8929",
+    "type": "sensor-ds18b20",
+    "z": "5b597ba5468c095d",
+    "name": "Internal",
+    "topic": "",
+    "sensorid": "28-3c01d607f7ec",
+    "timer": "1",
+    "repeat": false,
+    "x": 360,
+    "y": 240,
+    "wires": [
+        ["5b3bae402ccc6d30", "5c11b8f0e327db87"]
+    ]
+}, {
+    "id": "a44ab62597e574a9",
+    "type": "inject",
+    "z": "5b597ba5468c095d",
+    "name": "Run every 5min",
+    "props": [{
+        "p": "payload"
+    }, {
+        "p": "topic",
+        "vt": "str"
+    }],
+    "repeat": "300",
+    "crontab": "",
+    "once": true,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 130,
+    "y": 280,
+    "wires": [
+        ["8805cd3e4a8d8929", "1d188530c18cb669", "accd77fd21c10471"]
+    ]
+}, {
+    "id": "1d188530c18cb669",
+    "type": "sensor-ds18b20",
+    "z": "5b597ba5468c095d",
+    "name": "External",
+    "topic": "",
+    "sensorid": "28-012112a43152",
+    "timer": "1",
+    "repeat": false,
+    "x": 360,
+    "y": 320,
+    "wires": [
+        ["e01e1b9d4fc15527", "6c186e2554912ad6"]
+    ]
+}, {
+    "id": "11fd2abbbc6cad88",
+    "type": "mysql",
+    "z": "5b597ba5468c095d",
+    "mydb": "0fbd9b346266af42",
+    "name": "",
+    "x": 880,
+    "y": 280,
+    "wires": [
+        []
+    ]
+}, {
+    "id": "e01e1b9d4fc15527",
+    "type": "function",
+    "z": "5b597ba5468c095d",
+    "name": "Insert to DB",
+    "func": "msg.payload = [msg.payload];\nmsg.topic = \"INSERT INTO `outdoor_temp` (`temp_val`) VALUES (?);\";\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 630,
+    "y": 320,
+    "wires": [
+        ["11fd2abbbc6cad88"]
+    ]
+}, {
+    "id": "5b3bae402ccc6d30",
+    "type": "function",
+    "z": "5b597ba5468c095d",
+    "name": "Insert to DB",
+    "func": "msg.payload = [msg.payload];\nmsg.topic = \"INSERT INTO `indoor_temp` (`temp_val`) VALUES (?);\";\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 630,
+    "y": 240,
+    "wires": [
+        ["11fd2abbbc6cad88"]
+    ]
+}, {
+    "id": "accd77fd21c10471",
+    "type": "function",
+    "z": "5b597ba5468c095d",
+    "name": "Select from DB",
+    "func": "msg.payload = [msg.payload];\nmsg.topic = \"SELECT * FROM `status`;\";\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 280,
+    "y": 560,
+    "wires": [
+        ["1843aa1059ffdb4b"]
+    ]
+}, {
+    "id": "0e69ca23db5d2ab6",
+    "type": "function",
+    "z": "5b597ba5468c095d",
+    "name": "Check db values",
+    "func": "const colours = {\n    ac:\"0,0,0\",\n    heating:\"0,0,0\",\n    windows:\"0,0,0\",\n}\n\n\nif ([msg.payload][0][0].ac == 1) {\n    colours.ac = \"255,0,0\";\n}\n\nif ([msg.payload][0][0].heating == 1) {\n    colours.heating = \"0,255,0\";\n}\n\nif ([msg.payload][0][0].window == 1 ) {\n    colours.ac = \"0,0,255\";\n}\n\nmsg.payload = colours;\nmsg.topic = \"values\";\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 650,
+    "y": 560,
+    "wires": [
+        ["9e717e2d3e874933", "dcb66e4fecac7c90", "0dc6f0ad882bbfce"]
+    ]
+}, {
+    "id": "9e717e2d3e874933",
+    "type": "function",
+    "z": "5b597ba5468c095d",
+    "name": "AC colour",
+    "func": "if ([msg.payload][0][\"ac\"] == \"0,0,0\") {\n    msg.topic = \"AC is turned off.\";\n}\nelse {\n    msg.topic = \"AC is turned on.\";\n}\n\nmsg.payload = [msg.payload][0][\"ac\"];\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 960,
+    "y": 560,
+    "wires": [
+        ["ca764f143a5f7950", "47ad0fe06fa0c459"]
+    ]
+}, {
+    "id": "1843aa1059ffdb4b",
+    "type": "mysql",
+    "z": "5b597ba5468c095d",
+    "mydb": "0fbd9b346266af42",
+    "name": "",
+    "x": 460,
+    "y": 560,
+    "wires": [
+        ["0e69ca23db5d2ab6"]
+    ]
+}, {
+    "id": "ca764f143a5f7950",
+    "type": "debug",
+    "z": "5b597ba5468c095d",
+    "name": "",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 1190,
+    "y": 560,
+    "wires": []
+}, {
+    "id": "dcb66e4fecac7c90",
+    "type": "function",
+    "z": "5b597ba5468c095d",
+    "name": "Heating colour",
+    "func": "if ([msg.payload][0][\"heating\"] == \"0,0,0\") {\n    msg.topic = \"Heating is turned off.\";\n}\nelse {\n    msg.topic = \"Heating is turned on.\";\n}\n\nmsg.payload = [msg.payload][0][\"heating\"];\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 960,
+    "y": 480,
+    "wires": [
+        ["ca764f143a5f7950", "47ad0fe06fa0c459"]
+    ]
+}, {
+    "id": "0dc6f0ad882bbfce",
+    "type": "function",
+    "z": "5b597ba5468c095d",
+    "name": "Window colour",
+    "func": "if ([msg.payload][0][\"windows\"] == \"0,0,0\") {\n    msg.topic = \"Window is turned off.\";\n}\nelse {\n    msg.topic = \"Window is turned on.\";\n}\n\nmsg.payload = [msg.payload][0][\"windows\"];\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 960,
+    "y": 620,
+    "wires": [
+        ["ca764f143a5f7950", "47ad0fe06fa0c459"]
+    ]
+}, {
+    "id": "1ae0c21bd7755bac",
+    "type": "pushover",
+    "z": "5b597ba5468c095d",
+    "name": "Send notif",
+    "device": "",
+    "title": "Temp is below 4 degree threshold!",
+    "priority": 0,
+    "sound": "pushover",
+    "url": "",
+    "url_title": "",
+    "html": false,
+    "x": 1120,
+    "y": 280,
+    "wires": []
+}, {
+    "id": "6c186e2554912ad6",
+    "type": "function",
+    "z": "5b597ba5468c095d",
+    "name": "Check temp",
+    "func": "if ([msg.payload] < 4) {\n    return msg;\n}",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 630,
+    "y": 400,
+    "wires": [
+        ["1ae0c21bd7755bac", "8bbd69834decba3e"]
+    ]
+}, {
+    "id": "5c11b8f0e327db87",
+    "type": "function",
+    "z": "5b597ba5468c095d",
+    "name": "Check temp",
+    "func": "if ([msg.payload] < 4) {\n    return msg;\n}",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 630,
+    "y": 180,
+    "wires": [
+        ["1ae0c21bd7755bac", "8bbd69834decba3e"]
+    ]
+}, {
+    "id": "8bbd69834decba3e",
+    "type": "function",
+    "z": "5b597ba5468c095d",
+    "name": "Turn heating on",
+    "func": "\nmsg.payload = \"255,0,0\";\nmsg.topic = \"Heating has been turned on\";\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 1400,
+    "y": 280,
+    "wires": [
+        ["47ad0fe06fa0c459", "fe20321cfca5d665", "464af946df22292a"]
+    ]
+}, {
+    "id": "47ad0fe06fa0c459",
+    "type": "rpi-neopixels",
+    "z": "5b597ba5468c095d",
+    "name": "",
+    "gpio": "12",
+    "pixels": "3",
+    "bgnd": "",
+    "fgnd": "",
+    "wipe": "40",
+    "mode": "pcent",
+    "rgb": "rgb",
+    "brightness": "100",
+    "gamma": true,
+    "x": 1630,
+    "y": 560,
+    "wires": []
+}, {
+    "id": "fe20321cfca5d665",
+    "type": "debug",
+    "z": "5b597ba5468c095d",
+    "name": "",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "topic",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 1640,
+    "y": 280,
+    "wires": []
+}, {
+    "id": "464af946df22292a",
+    "type": "function",
+    "z": "5b597ba5468c095d",
+    "name": "Update site that heating is on",
+    "func": "msg.payload = [msg.payload];\nmsg.topic = \"UPDATE `status` SET `heating` = 1;\";\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 1700,
+    "y": 220,
+    "wires": [
+        ["a64b628614ea7c4f"]
+    ]
+}, {
+    "id": "a64b628614ea7c4f",
+    "type": "mysql",
+    "z": "5b597ba5468c095d",
+    "mydb": "0fbd9b346266af42",
+    "name": "",
+    "x": 2020,
+    "y": 220,
+    "wires": [
+        []
+    ]
+}, {
+    "id": "0fbd9b346266af42",
+    "type": "MySQLdatabase",
+    "name": "Main db",
+    "host": "",
+    "port": "",
+    "db": "",
+    "tz": "",
+    "charset": "UTF8",
+    "credentials": {}
+}]

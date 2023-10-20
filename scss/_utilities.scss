@@ -181,6 +181,7 @@ nav {
     #outdoor-chart, #api-chart {
         display: flex;
         align-items: center;
+        justify-content: center;
 
         // Inside of chart
         &>div>div>div>svg>rect {
@@ -253,4 +254,9 @@ nav {
 
 footer {
     gap:5px;
+}
+
+.notice {
+    text-align: center;
+    font-size: 22px;
 }
