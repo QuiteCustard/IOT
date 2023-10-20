@@ -1,3 +1,4 @@
+# Notice: The pi has been disabled so no more data will pass through. The Flow has been uploaded int othe Flows folder, it can be imported into Node Red for the same set up as this project used.
 # Website dashboard for a virtual household management system
 [View the site](https://ws269058-iot.remote.ac/ "Website dashboard for a virtual household management system")
 ## Login details:
