@@ -22,7 +22,7 @@ const piConfirmAlert = document.querySelector(".pi-alert > .confirm-alert");
 const chartAlert = document.querySelector(".chart-alert");
 const chartConfirmAlert = document.querySelector(".chart-alert > .confirm-alert");
 
-const key = "2a26f9f282b9a3040f9c5419c953341a";
+const key = "";
 
 const controls = document.getElementById('controls');
 const ac = document.getElementById('ac');

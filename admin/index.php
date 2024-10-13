@@ -20,7 +20,7 @@ require_once ("connect.php");
     </header>
     <main>
         <h1>Dashboard</h1>
-        <h2 class="notice">Notice: The Pi has now been disconnected so no more data will pass through.</h2>
+        <h2 class="notice">Notice: The Pi has now been disconnected so no more data will pass through. The API key has also been removed.</h2>
         <section id="controls-section">
             <h2>Controls</h2>
             <div class="container" id="controls">
